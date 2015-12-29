@@ -43,14 +43,14 @@ LEDMatrix(int data_in_pin, int load_pin, int clock_pin, int device_count)
 LEDMatrix * led = new LEDMatrix(17, 23, 22, 1);
 ```
 
-### Shutdown or turn on display module
+### Turn on/off display module
 
 ```C++
 void shutdownDisplay(int device_number, bool mode)
 ```
 
 * `int device_number` Address of device to turn on/off (zero based)
-* `bool mode` true - off; false - on
+* `bool mode` true - off, false - on
 
 **Example**
 
@@ -58,20 +58,147 @@ void shutdownDisplay(int device_number, bool mode)
 led->shutdownDisplay(0, true);
 ```
 
-`void clearDisplay(int device_number)`
+### Turn all LED segments off
 
-`void setIntensity(int device_number, int intensity)`
-		
-`void putLed(int device_number, int row, int column, bool state)`
+```C++
+void clearDisplay(int device_number)
+```
 
-`void putRow(int device_number, int row, char value)`
+* `int device_number` Device address (zero based)
 
-`void putColumn(int device_number, int column, char value)`
+**Example**
 
-`void putCharacter(int device_number, char character, const char font[][8] = CP437_FONT)`
+```C++
+led->clearDisplay(0);
+```
 
-`void scrollCharacter(int device_number, char character, const char font[][8] = CP437_FONT, int speed = 50000)`
+### Set brightness of display module
 
-`void scrollText(int device_number, string text, const char font[][8] = CP437_FONT, int speed = 50000)`
+```C++
+void setIntensity(int device_number, int intensity)
+```
 
-`template <typename T, size_t frames, size_t rows> void playAnimation(int device_number, const T (&animation)[frames][rows], int iterations = 1, int speed = 50000)`
+* `int device_number` Device address (zero based)
+* `int intensity` Dimmer (0) to brighter (15)
+
+**Example**
+
+```C++
+led->setIntensity(0, 15);
+```
+
+### Turn single LED on/off at [row,column]
+
+```C++
+void putLed(int device_number, int row, int column, bool state)
+```
+
+* `int device_number` Device address (zero based)
+* `int row` Row number 0 through 7
+* `int column` Column number 0 through 7
+* `bool state` LED state: false - off, true - on
+
+**Example**
+
+```C++
+led->putLed(0, 1, 1, true);
+```
+
+### Display row pattern
+
+```C++
+void putRow(int device_number, int row, char value)
+````
+
+* `int device_number` Device address (zero based)
+* `int row` Row number 0 through 7
+* `char value` Bit pattern to show in row from 0x00 (all off) to 0xFF (all on)
+
+**Example**
+
+```C++
+led->putRow(0, 1, 0x93);
+```
+
+### Display column pattern
+
+```C++
+void putColumn(int device_number, int column, char value)
+```
+
+* `int device_number` Device address (zero based)
+* `int column` Column number 0 through 7
+* `char value` Bit pattern to show in column from 0x00 (all off) to 0xFF (all on)
+
+**Example**
+
+```C++
+led->putColumn(0, 1, 0x93);
+```
+
+### Display character
+
+```C++
+void putCharacter(int device_number, char character, const char font[][8] = CP437_FONT)
+```
+
+* `int device_number` Device address (zero based)
+* `char character` Character to show ASCII/CP437 (0 to 255)
+* `const char font[][8]` Specific font to use, see *fonts.h*
+
+**Example**
+
+```C++
+led->putCharacter(0, 'A');
+```
+
+### Scroll single character
+
+```C++
+void scrollCharacter(int device_number, char character, const char font[][8] = CP437_FONT, int speed = 50000)
+```
+
+* `int device_number` Device address (zero based)
+* `char character` Character to show ASCII/CP437 (0 to 255)
+* `const char font[][8]` Specific font to use, see *fonts.h*
+* `int speed` Bigger the number, slower the scrolling speed
+
+**Example**
+
+```C++
+led->scrollCharacter(0, 'A');
+```
+
+### Scroll text
+
+```C++
+void scrollText(int device_number, string text, const char font[][8] = CP437_FONT, int speed = 50000)
+```
+
+* `int device_number` Device address (zero based)
+* `string text` Text to scroll
+* `const char font[][8]` Specific font to use, see *fonts.h*
+* `int speed` Bigger the number, slower the scrolling speed
+
+**Example**
+
+```C++
+led->scrollText(0, 'Text');
+```
+
+### Play animation
+
+```C++
+template <typename T, size_t frames, size_t rows> void playAnimation(int device_number, const T (&animation)[frames][rows], int iterations = 1, int speed = 50000)
+```
+
+* `int device_number` Device address (zero based)
+* `const char font[][8]` Animation to use, see *animations.h*
+* `int iterations` Number of iterations (plays)
+* `int speed` Bigger the number, slower the scrolling speed
+
+**Example**
+
+```C++
+led->playAnimation(0, TALKING_FACE_ANIMATION, 20, 90000);
+```
