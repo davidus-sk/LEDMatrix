@@ -6,7 +6,7 @@ This is a simple C++ class which will enable you to connect 8x8 LED matrix(ces) 
 
 Here's a simple demo program you can try. Create a new file _demo.cpp_ and paste this code into it.
 
-```
+```C++
 #include "LEDMatrix.h"
 
 int main(void) {
